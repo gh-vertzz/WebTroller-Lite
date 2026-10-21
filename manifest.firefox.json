@@ -1,0 +1,108 @@
+{
+  "manifest_version": 3,
+  "name": "WebTroller Lite",
+  "version": "1.0.8",
+  "description": "WebTroller Lite: a light, fast on-screen game controller for any website, made for low-end devices. Developed by Vertzz.",
+  "homepage_url": "https://t.me/vertzz_official",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "WebTroller Lite: show or hide",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "volume.js"
+      ],
+      "all_frames": true,
+      "match_about_blank": true,
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "adblock.js"
+      ],
+      "all_frames": true,
+      "match_about_blank": true,
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "frame.js"
+      ],
+      "all_frames": true,
+      "match_about_blank": true,
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "icons/icon128.png"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "commands": {
+    "toggle-webtroller": {
+      "suggested_key": {
+        "default": "Alt+Shift+E"
+      },
+      "description": "Show or hide WebTroller Lite"
+    }
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "developer": {
+    "name": "Vertzz",
+    "url": "https://t.me/vertzz_official"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "webtroller-lite@local",
+      "strict_min_version": "121.0"
+    }
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ads",
+        "enabled": false,
+        "path": "rules/ads.json"
+      }
+    ]
+  }
+}
