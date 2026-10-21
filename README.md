@@ -424,5 +424,3 @@ Chrome on Android cannot run extensions. Use Kiwi Browser or Firefox.</p>
 <h2 id="about">About</h2>
 
 <p>WebTroller Lite is developed by <strong>Vertzz</strong>. For questions, support or business contact: <a href="https://t.me/vertzz_official">https://t.me/vertzz_official</a></p>
-# WebTroller-Lite
-# WebTroller-Lite
