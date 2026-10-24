@@ -2590,7 +2590,9 @@ $("ov").onpointerdown=e=>{if(mode==="edit"&&e.target===$("ov")){selectOnly(null)
 /* ---------- Edit layout / Done: ask before keeping changes ---------- */
 $("edit").onclick=()=>{fitBtns();EDIT0=MODE0=EDIT_START=snap();   /* the buttons of every mode are fitted to the screen BEFORE the starting point is taken, so visiting modes later never looks like a change */
   SAVED_GONE=false;setMode("edit");tutAuto()};
-function leaveEdit(){SAVED_GONE=false;save();setMode("play")}
+/* leaving the editor always lands on the first mode that is switched on in the switcher (modes switched off are skipped) */
+function firstModeOn(){const i=S.layers.findIndex(l=>!l.hide);if(i<0||i===S.li)return;releaseAll();syncLayer();S.li=i;S.btns=S.layers[i].btns;fitBtns()}
+function leaveEdit(){SAVED_GONE=false;firstModeOn();save();setMode("play")}
 $("done").onclick=()=>{
   const changed=!sameEdit(snap(),EDIT0)||SAVED_GONE,name=curName(),exists=!!(name&&slots()[name]);
   if(exists&&!changed)return leaveEdit();   /* a layout that is already saved and has no changes: nothing to ask, as before */
