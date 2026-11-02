@@ -337,7 +337,7 @@ Chrome on Android cannot run extensions. Use Kiwi Browser or Firefox.</p>
 
 <h3 id="portrait-and-landscape">Portrait and landscape</h3>
 
-<p>Each orientation has its own layout and its own saved list. Rotate your device and WebTroller loads the matching one. The editor bar shows which one you are editing.</p>
+<p>A saved layout has one name and two separate layouts inside it: one for portrait and one for landscape. Whatever you edit and save in an orientation is saved as that orientation's layout under the name you typed; save again in the other orientation under the same name to complete the pair. Load Layout lists each name once. A saved layout holds two separate layouts under one name: one for portrait and one for landscape. When you save, both are saved together, exactly as each orientation is at that moment, edited or not. When you load a layout, the portrait one opens when the phone is portrait and the landscape one opens when it is landscape, so after you turn the phone you see the other one. Nothing is ever fitted or copied from one orientation to the other. Only the layout that is open on screen is marked Current. The editor bar shows which orientation you are editing.</p>
 
 <h3 id="saving-and-loading">Saving and loading</h3>
 

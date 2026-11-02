@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "WebTroller Lite",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "WebTroller Lite: a light, fast on-screen game controller for any website, made for low-end devices. Developed by Vertzz.",
   "homepage_url": "https://t.me/vertzz_official",
   "icons": {
