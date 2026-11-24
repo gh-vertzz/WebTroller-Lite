@@ -7,7 +7,7 @@ const HTML="<div id=\"app\">\n  <div id=\"bright\"></div>\n  <div id=\"grid\"></
 chrome.storage.local.get(["wt","emu3"],r=>start(r.wt||r.emu3||null));
 function start(saved){
 const host=document.createElement("div");host.id="webtroller-host";
-host.style.cssText="all:initial;position:fixed;inset:0;z-index:2147483647;pointer-events:none";
+host.style.cssText="all:initial;position:fixed;inset:0;z-index:2147483647;pointer-events:none;color-scheme:dark;forced-color-adjust:none";
 const root=host.attachShadow({mode:"open"});
 root.innerHTML="<style>"+CSS+'</style><div id="shell" data-mode="play" data-grid="1">'+HTML+"</div>";
 document.documentElement.appendChild(host);
@@ -26,9 +26,13 @@ const wtScale=()=>{const v=window.visualViewport,s=v&&v.scale;return s&&Math.abs
    viewSize() therefore keeps the last full height (same width, height dropped by a keyboard-sized amount) and the button layer stays that tall; the keyboard just covers the bottom. */
 let FULLW=0,FULLH=0;
 const realSize=()=>{const s=wtScale(),d=document.documentElement;return[(d.clientWidth||innerWidth)*s,(d.clientHeight||innerHeight)*s]};
+/* a shorter page can only be the on-screen keyboard while something you can type in is focused. Without that check, a moment where the page
+   read taller than normal (another app's overlay such as Gemini opening or closing, the toolbar hiding) was remembered as the "full" height,
+   the real height then looked like an open keyboard for ever, and the whole button layer sat too low and off the bottom of the screen. */
+const typing=()=>{const a=document.activeElement;if(!a)return false;const t=a.tagName;return t==="INPUT"||t==="TEXTAREA"||t==="SELECT"||t==="IFRAME"||!!a.isContentEditable};
 const viewSize=()=>{const[w,h]=realSize();
   if(!FULLW||Math.abs(w-FULLW)>2){FULLW=w;FULLH=h;return[w,h]}      /* first call or a real resize / rotation */
-  if(h>=FULLH*.78){FULLH=h;return[w,h]}                              /* normal change (address bar showing or hiding) */
+  if(h>=FULLH*.78||!typing()){FULLH=h;return[w,h]}                   /* normal change (address bar showing or hiding), or nothing is being typed so there is no keyboard */
   return[w,FULLH]};                                                  /* keyboard: keep the full height */
 /* a rectangle in overlay px (getBoundingClientRect gives page layout px) */
 const BR=el=>{const r=el.getBoundingClientRect(),s=wtScale();return{left:r.left*s,top:r.top*s,right:r.right*s,bottom:r.bottom*s,width:r.width*s,height:r.height*s}};
@@ -630,6 +634,11 @@ let refRaf=0;function refresh(){if(refRaf)return;refRaf=requestAnimationFrame(()
 addEventListener("resize",refresh);
 if(window.visualViewport)visualViewport.addEventListener("resize",refresh);
 addEventListener("orientationchange",()=>setTimeout(refresh,150));
+/* coming back from another app or overlay (Gemini, the app switcher, a call) or closing the keyboard: measure the page again so the buttons never stay at a stale height */
+addEventListener("focus",()=>{setTimeout(refresh,100);setTimeout(refresh,600)});
+addEventListener("pageshow",()=>setTimeout(refresh,100));
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){setTimeout(refresh,100);setTimeout(refresh,600)}});
+document.addEventListener("focusout",()=>setTimeout(refresh,350));
 /* the page can still change its width after it first appears (scrollbar, toolbar, late layout): centre the buttons again once it has settled */
 addEventListener("load",()=>setTimeout(refresh,50));setTimeout(refresh,800);
 
